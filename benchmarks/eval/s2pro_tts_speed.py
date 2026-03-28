@@ -56,7 +56,9 @@ async def benchmark(args: argparse.Namespace) -> None:
         logger.error("Testset not found: %s", args.testset)
         return
 
-    samples = load_seedtts_samples(args.testset, args.max_samples)
+    samples = load_seedtts_samples(
+        args.testset, args.max_samples, shuffle=args.shuffle, seed=args.sample_seed
+    )
     logger.info("Prepared %d requests", len(samples))
 
     save_audio_dir = None
@@ -145,6 +147,10 @@ def main() -> None:
     )
     parser.add_argument("--output-dir", type=str, default="results/tts_speed")
     parser.add_argument("--max-samples", type=int, default=None)
+    parser.add_argument(
+        "--shuffle", action="store_true", help="Randomly sample instead of taking the first N."
+    )
+    parser.add_argument("--sample-seed", type=int, default=42, help="Random seed for reproducible sampling.")
     parser.add_argument("--max-new-tokens", type=int, default=2048)
     parser.add_argument("--temperature", type=float, default=None)
     parser.add_argument("--top-p", type=float, default=None)

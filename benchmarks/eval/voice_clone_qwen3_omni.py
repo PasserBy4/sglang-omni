@@ -59,7 +59,9 @@ async def main_async(args: argparse.Namespace) -> None:
 
     asr = load_asr_model(args.lang, args.asr_device)
 
-    samples = load_seedtts_samples(args.meta, args.max_samples)
+    samples = load_seedtts_samples(
+        args.meta, args.max_samples, shuffle=args.shuffle, seed=args.sample_seed
+    )
     logger.info("Loaded %d samples from %s", len(samples), args.meta)
 
     audio_dir = os.path.join(args.output_dir, "audio")
@@ -147,6 +149,10 @@ def main() -> None:
         "--asr-device", default="cuda:0", help="Device for ASR (Whisper) model"
     )
     p.add_argument("--max-samples", type=int, default=None)
+    p.add_argument(
+        "--shuffle", action="store_true", help="Randomly sample instead of taking the first N."
+    )
+    p.add_argument("--sample-seed", type=int, default=42, help="Random seed for reproducible sampling.")
     p.add_argument(
         "--voice-clone",
         action="store_true",
