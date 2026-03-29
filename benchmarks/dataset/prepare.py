@@ -11,7 +11,6 @@ from __future__ import annotations
 import argparse
 import logging
 import os
-import subprocess
 
 logger = logging.getLogger(__name__)
 
@@ -30,16 +29,9 @@ def download_dataset(
         return
 
     logger.info("Downloading %s to %s ...", repo_id, local_dir)
-    cmd = [
-        "huggingface-cli",
-        "download",
-        repo_id,
-        "--repo-type",
-        "dataset",
-        "--local-dir",
-        local_dir,
-    ]
-    subprocess.run(cmd, check=True)
+    from huggingface_hub import snapshot_download
+
+    snapshot_download(repo_id, repo_type="dataset", local_dir=local_dir)
     logger.info("Dataset downloaded to %s", local_dir)
 
 

@@ -36,3 +36,5 @@ uv.lock
 results/
 .humanize/
 .humanize/
+
+seedtts_testset/
