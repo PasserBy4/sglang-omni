@@ -24,9 +24,8 @@
 set -e
 
 PORT=8000
-SEED=42
 MODEL="/tmp/s2pro-degraded"
-SIZES=(6 100 300)
+SIZES=(6 20 100)
 META="seedtts_testset/en/meta.lst"
 BASE="results/representativeness/s2pro_vc_degraded"
 ASR_DEVICE="cuda:1"
@@ -59,7 +58,6 @@ for n in "${SIZES[@]}"; do
   python -m benchmarks.eval.voice_clone_s2pro \
     --model "$MODEL" --port $PORT --device $ASR_DEVICE \
     --meta "$META" --lang en --max-samples $n \
-    --shuffle --sample-seed $SEED \
     --output-dir "${BASE}/wer/en/shuf_${n}"
 
   echo ""

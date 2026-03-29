@@ -18,9 +18,8 @@
 set -e
 
 PORT=8000
-SEED=42
 MODEL="fishaudio/s2-pro"
-SIZES=(6 100 300)
+SIZES=(6 20 100)
 META="seedtts_testset/en/meta.lst"
 BASE="results/representativeness/s2pro_vc"
 ASR_DEVICE="cuda:1"
@@ -45,27 +44,18 @@ for n in "${SIZES[@]}"; do
   echo "=============================="
 
   # --- Performance: streaming ---
-  echo "[1/2] Performance streaming (n=$n) ..."
-  python -m benchmarks.eval.s2pro_tts_speed \
-    --model $MODEL --port $PORT \
-    --testset "$META" --max-samples $n --stream \
-    --shuffle --sample-seed $SEED \
-    --output-dir "${BASE}/perf_stream/en/shuf_${n}"
 
   # --- WER accuracy ---
   echo "[2/2] WER accuracy (n=$n) ..."
   python -m benchmarks.eval.voice_clone_s2pro \
     --model $MODEL --port $PORT --device $ASR_DEVICE \
     --meta "$META" --lang en --max-samples $n \
-    --shuffle --sample-seed $SEED \
     --output-dir "${BASE}/wer/en/shuf_${n}"
 
   echo ""
 done
 
-echo "=== All 6 runs completed ==="
+echo "=== All runs completed ==="
 echo "Results saved to: ${BASE}/"
 echo ""
-echo "Directory layout:"
-echo "  ${BASE}/perf_stream/en/shuf_{6,100,300}/speed_results.json"
-echo "  ${BASE}/wer/en/shuf_{6,100,300}/wer_results.json"
+echo "Directory layout: ${BASE}/wer/en/shuf_{6,20,100}/wer_results.json"

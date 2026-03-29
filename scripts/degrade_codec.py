@@ -200,9 +200,11 @@ def create_degraded_checkpoint(
         shutil.rmtree(output_dir)
 
     log.info("Copying checkpoint to %s", output_dir)
-    shutil.copytree(checkpoint_dir, output_dir, symlinks=True)
+    shutil.copytree(checkpoint_dir, output_dir, symlinks=False)
 
     degraded_codec_path = output_dir / "codec.pth"
+    if degraded_codec_path.exists() or degraded_codec_path.is_symlink():
+        degraded_codec_path.unlink()
     log.info("Saving degraded codec.pth to %s", degraded_codec_path)
     torch.save(degraded_sd, degraded_codec_path)
 
