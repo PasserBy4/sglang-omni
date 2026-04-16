@@ -369,6 +369,7 @@ def save_mmsu_results(
     output_dir: str,
     *,
     speed_metrics: dict[str, Any] | None = None,
+    wer_metrics: dict[str, Any] | None = None,
 ) -> None:
     summary_output = {
         "summary": metrics,
@@ -377,6 +378,8 @@ def save_mmsu_results(
     }
     if speed_metrics:
         summary_output["speed_metrics"] = speed_metrics
+    if wer_metrics:
+        summary_output["wer"] = wer_metrics
 
     save_json_results(summary_output, output_dir, "mmsu_results.json")
 
