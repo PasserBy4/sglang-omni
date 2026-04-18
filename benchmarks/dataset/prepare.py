@@ -21,6 +21,7 @@ DATASETS = {
     "seedtts-mini": "zhaochenyang20/seed-tts-eval-mini",
     "seedtts-50": "xuesongye/seed-tts-eval-50",
     "mmmu-ci-50": "zhaochenyang20/mmmu-ci-50",
+    "mmsu-ci-2000": "zhaochenyang20/mmsu-ci-2000",
 }
 
 
